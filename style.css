@@ -1,0 +1,48 @@
+*{
+    margin: 0;
+}
+
+body{
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #1f1f1f;
+}
+
+.container{
+    width: 70ch;
+    padding: 1.5rem;
+    border: solid 3px;
+    border-radius: 1rem;
+    background: #101010; 
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.book{
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.hadith_info{
+    font-family: palatino;
+    color: #82a8b5;
+}
+
+.narrator{
+    font-weight: bold;
+}
+
+.book{
+    font-size: 0.8em;
+    text-align: right;
+}
+
+.hadith{
+    color: #cedade;
+    line-height: 1.5rem;
+    font-size: 0.9em;
+}
