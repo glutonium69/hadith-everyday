@@ -25,12 +25,6 @@ body{
     translate: -50% 0;
 }
 
-.book{
-    color: white;
-    font-weight: bold;
-    font-size: 2rem;
-}
-
 .hadith_info{
     font-family: palatino;
     color: #82a8b5;
@@ -38,15 +32,17 @@ body{
 
 .narrator{
     font-weight: bold;
+    font-size: 1.5em;
 }
 
 .book{
-    font-size: 0.8em;
+    font-weight: bold;
     text-align: right;
+    font-size: 0.8em;
 }
 
 .hadith{
     color: #cedade;
-    line-height: 1.5rem;
-    font-size: 0.9em;
+    line-height: 2rem;
+    font-size: 1em;
 }
