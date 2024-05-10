@@ -21,7 +21,7 @@ body{
     flex-direction: column;
     gap: 1rem;
     position: absolute;
-    top: 25%;
+    top: 0%;
     left: 50%;
     translate: -50% 0;
 }
