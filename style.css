@@ -1,5 +1,6 @@
 *{
     margin: 0;
+    box-sizing: border-box;
 }
 
 body{
@@ -10,8 +11,7 @@ body{
 }
 
 .container{
-    max-width: 70ch;
-    min-width: 45ch;
+    width: 100%;
     padding: 1rem;
     border: solid 3px;
     border-radius: 1rem;
