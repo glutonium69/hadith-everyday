@@ -3,7 +3,10 @@ const hadith = document.querySelector(".hadith p");
 const book = document.querySelector(".book p");
 
 async function getHadith() {
-    const apiUrl = 'https://random-hadith-generator.vercel.app/bukhari/';
+    const scriptures = ["bukhari", "tirmidhi", "abudawud", "muslim"];
+    const pickedScriptures = scriptures[Math.round(Math.random() * scriptures.length)];
+    const apiUrl = 'https://random-hadith-generator.vercel.app/' + pickedScriptures;
+
     try {
         const res = await fetch(apiUrl);
         const hadithData = await res.json();
