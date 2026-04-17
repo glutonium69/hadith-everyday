@@ -1,17 +1,17 @@
 const narrator: HTMLParagraphElement | null = document.querySelector(".narrator p");
 const hadith: HTMLParagraphElement | null = document.querySelector(".hadith p");
 const book: HTMLParagraphElement | null = document.querySelector(".book p");
+const apiKey = "$2y$10$vpsEL72Uv1Yuz9nTVARUuZ7UHLzWUEWhV2kCZoRbUTSWSdS7QO2";
 
 interface HadithData {
     header: string | null,
     hadith_english: string | null,
-    refno: number | null
+    refno: string
 }
 
-async function getHadith(): Promise<HadithData> {
-    const scriptures: String[] = ["bukhari", "tirmidhi", "abudawud", "muslim"];
-    const pickedScriptures: String = scriptures[Math.floor(Math.random() * scriptures.length)];
-    const apiUrl: RequestInfo = 'https://random-hadith-generator.vercel.app/' + pickedScriptures;
+async function getHadith(i = 0): Promise<HadithData> {
+    const hadithNum: number = Math.round(Math.random() * 7000);
+    const apiUrl: RequestInfo = `https://hadithapi.com/api/hadiths?hadithNumber=${hadithNum}&apiKey=${apiKey}`;
 
     try {
         const res: Response = await fetch(apiUrl);
@@ -21,32 +21,43 @@ async function getHadith(): Promise<HadithData> {
         }
 
         const hadithData: any = await res.json();
+        const randHadith: any = hadithData.hadiths.data[
+            Math.floor(Math.random() * hadithData.hadiths.data.length)
+        ];
+
+        if (!randHadith.hadithEnglish.trim()) {
+            throw new Error("No english hadith");
+        }
 
         return {
-            header: hadithData?.data?.header ?? null,
-            hadith_english: hadithData?.data?.hadith_english ?? null,
-            refno: hadithData?.data?.refno ?? null
+            header: randHadith?.englishNarrator ?? null,
+            hadith_english: randHadith.hadithEnglish,
+            refno: `${randHadith?.book?.bookName} ${randHadith?.hadithNumber} (${randHadith?.status})`
         }
     } catch (error) {
         console.log(error)
-        return {
-            header: null,
-            hadith_english: null,
-            refno: null
+        if (i < 10) {
+            getHadith(++i);
+        } else {
+            return {
+                header: null,
+                hadith_english: null,
+                refno: ""
+            }
         }
     }
 }
 
-async function setHadith(): Promise<void>{
+async function setHadith(): Promise<void> {
     const hadithData = await getHadith();
 
-    if(narrator){
+    if (narrator) {
         narrator.textContent = hadithData.header ?? "No header found";
     }
-    if(hadith){
+    if (hadith) {
         hadith.textContent = hadithData.hadith_english ?? "No hadith found";
     }
-    if(book){
+    if (book) {
         book.textContent = String(hadithData.refno) ?? "No refno found";
     }
 }

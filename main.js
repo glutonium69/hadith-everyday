@@ -11,31 +11,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const narrator = document.querySelector(".narrator p");
 const hadith = document.querySelector(".hadith p");
 const book = document.querySelector(".book p");
+const apiKey = "$2y$10$vpsEL72Uv1Yuz9nTVARUuZ7UHLzWUEWhV2kCZoRbUTSWSdS7QO2";
 function getHadith() {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b, _c, _d, _e, _f;
-        const scriptures = ["bukhari", "tirmidhi", "abudawud", "muslim"];
-        const pickedScriptures = scriptures[Math.floor(Math.random() * scriptures.length)];
-        const apiUrl = 'https://random-hadith-generator.vercel.app/' + pickedScriptures;
+    return __awaiter(this, arguments, void 0, function* (i = 0) {
+        var _a, _b;
+        const hadithNum = Math.round(Math.random() * 7000);
+        const apiUrl = `https://hadithapi.com/api/hadiths?hadithNumber=${hadithNum}&apiKey=${apiKey}`;
         try {
             const res = yield fetch(apiUrl);
             if (!res.ok) {
                 throw new Error(`Network response was not ok: ${res.statusText}`);
             }
             const hadithData = yield res.json();
+            const randHadith = hadithData.hadiths.data[Math.floor(Math.random() * hadithData.hadiths.data.length)];
+            if (!randHadith.hadithEnglish.trim()) {
+                throw new Error("No english hadith");
+            }
             return {
-                header: (_b = (_a = hadithData === null || hadithData === void 0 ? void 0 : hadithData.data) === null || _a === void 0 ? void 0 : _a.header) !== null && _b !== void 0 ? _b : null,
-                hadith_english: (_d = (_c = hadithData === null || hadithData === void 0 ? void 0 : hadithData.data) === null || _c === void 0 ? void 0 : _c.hadith_english) !== null && _d !== void 0 ? _d : null,
-                refno: (_f = (_e = hadithData === null || hadithData === void 0 ? void 0 : hadithData.data) === null || _e === void 0 ? void 0 : _e.refno) !== null && _f !== void 0 ? _f : null
+                header: (_a = randHadith === null || randHadith === void 0 ? void 0 : randHadith.englishNarrator) !== null && _a !== void 0 ? _a : null,
+                hadith_english: randHadith.hadithEnglish,
+                refno: `${(_b = randHadith === null || randHadith === void 0 ? void 0 : randHadith.book) === null || _b === void 0 ? void 0 : _b.bookName} ${randHadith === null || randHadith === void 0 ? void 0 : randHadith.hadithNumber} (${randHadith === null || randHadith === void 0 ? void 0 : randHadith.status})`
             };
         }
         catch (error) {
             console.log(error);
-            return {
-                header: null,
-                hadith_english: null,
-                refno: null
-            };
+            if (i < 10) {
+                getHadith(++i);
+            }
+            else {
+                return {
+                    header: null,
+                    hadith_english: null,
+                    refno: ""
+                };
+            }
         }
     });
 }
